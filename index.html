@@ -19,34 +19,10 @@
         </div>
     </header>
     <main class="main container">
+        <h2 class="visually-hidden">Список котов</h2>
         <section class="cards">
             
-            <div class="card">
-                <img src="https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg" class="card__img" alt="whiteCat">
-                <a href="#" class="card__link">Январь</a>
-                <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
-            </div>
-            <div class="card">
-                <img src="https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg" class="card__img" alt="whiteCat">
-                <a href="#" class="card__link">Январь</a>
-                <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
-            </div>
-            <div class="card">
-                <img src="https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg" class="card__img" alt="whiteCat">
-                <a href="#" class="card__link">Январь</a>
-                <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
-            </div>
-            <div class="card">
-                <img src="https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg" class="card__img" alt="whiteCat">
-                <a href="#" class="card__link">Январь</a>
-                <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
-            </div>
-            <div class="card">
-                <img src="https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg" class="card__img" alt="whiteCat">
-                <a href="#" class="card__link">Январь</a>
-                <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
-            </div>
-            
+                     
         </section>
     </main>
     <footer class="footer">
@@ -79,13 +55,19 @@
                 <input type="url" name="link-cat-img" class="form__input form__input_image" placeholder="Ссылка на фото">
                 <button type="submit" class="form__btn btn ">Добавить котика</button>
 
-
-
-
-
             </form>
         </div>
-
     </div>
+    <template id="card-template">
+        <div class="card">
+            <img src="#" class="card__img" alt="whiteCat">
+            <a href="#" class="card__link"></a>
+            <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
+        </div> 
+    </template>
+    <script src="./scripts/cats.js" defer></script>
+    <script src="./scripts/card.js" defer></script>
+    <script src="./scripts/popup.js" defer></script>
+    <script src="./scripts/index.js" defer></script>
 </body>
 </html>
