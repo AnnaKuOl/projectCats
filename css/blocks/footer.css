@@ -1,0 +1,23 @@
+.footer {
+    background-color: var(--bg-menu-color);
+    padding: 15px 0px;
+    box-shadow: 0 0 2px var(--bg-dark-color);
+}
+.footer__menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.copyright {
+    color: var(--text-secondary-color);
+    font-size: 13px;
+}
+.social__link {
+    font-size: 25px;
+    color: var(--bg-dark-color);
+}
+.social {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

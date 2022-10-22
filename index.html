@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Cats</title>
+    <script src="https://kit.fontawesome.com/b653633a88.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body class="page">
+    <header class="header">
+        <div class="header__menu container">
+            <div class="header__logo">
+                <a href="#" class="header__link"><i class="fa-solid fa-paw fa-2x"></i>Милые котики</a>
+                
+            </div>            
+            <button class="btn" id="add"><i class="fa-solid fa-plus"></i></button>
+        </div>
+    </header>
+    <main class="main container">
+        <section class="cards">
+            
+            <div class="card">
+                <img src="https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg" class="card__img" alt="whiteCat">
+                <a href="#" class="card__link">Январь</a>
+                <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
+            </div>
+            <div class="card">
+                <img src="https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg" class="card__img" alt="whiteCat">
+                <a href="#" class="card__link">Январь</a>
+                <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
+            </div>
+            <div class="card">
+                <img src="https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg" class="card__img" alt="whiteCat">
+                <a href="#" class="card__link">Январь</a>
+                <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
+            </div>
+            <div class="card">
+                <img src="https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg" class="card__img" alt="whiteCat">
+                <a href="#" class="card__link">Январь</a>
+                <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
+            </div>
+            <div class="card">
+                <img src="https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg" class="card__img" alt="whiteCat">
+                <a href="#" class="card__link">Январь</a>
+                <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
+            </div>
+            
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer__menu container">
+            <div class="copyright">©2022 Made by Anna Kurashko</div>
+            <div class="social">
+                <a href ="#" class="social__link"><i class="fa-brands fa-github "></i></a>
+                <a href ="#" class="social__link"><i class="fa-brands fa-vk "></i></a>
+                <a href ="#" class="social__link"><i class="fa-brands fa-telegram "></i></a>
+            </div>
+        </div>
+    </footer>
+    <div class="popup popup-add-cat">
+        <div class="popup__container">
+            <h2 class="popup__title">Добавить питомца</h2>
+            <button class="popup__close-btn btn"><i class="fa-solid fa-xmark"></i></button>
+            
+            <form action="#" class="form">
+                <div class="form__img"></div>
+                <input type="number" min="1" placeholder="id" class="form__input" name="id" required>
+                <input type="number"  placeholder="Возраст" class="form__input" name="age">
+                <input type="text" placeholder="Имя" class="form__input" name="name" required>
+                <input type="number" placeholder="Рейтинг (0-10)" class="form__input" name="rate" min="0" max="10">
+                <textarea name="description" class="form__input form__textarea" placeholder="Описание"></textarea>
+                <label class ="form__checkbox-group">
+                    <input type="checkbox" name="favorite" class="form__checkbox" placeholder="">
+                    <span class="form__checkbox-name">Любимчик</span>
+                    <span class="form__checkbox-fake"><i class="fa-regular fa-circle-check"></i></span>
+                </label>
+                <input type="url" name="link-cat-img" class="form__input form__input_image" placeholder="Ссылка на фото">
+                <button type="submit" class="form__btn btn ">Добавить котика</button>
+
+
+
+
+
+            </form>
+        </div>
+
+    </div>
+</body>
+</html>

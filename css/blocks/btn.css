@@ -1,0 +1,13 @@
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: var(--bg-dark-color);
+    border-radius: 10px;
+    padding: 5px 10px;
+    color: var(--text-light-color);
+    font-size: 18px;
+    gap: 20px;
+    cursor: pointer;
+}
