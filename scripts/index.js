@@ -21,27 +21,34 @@ function serializeForm(elements) {
     console.log (dataForm);
     return dataForm;
 }
+function createCat (data){
+    const card = new Card(data, '#card-template');
+    const newCardEl = card.getElement();    
+    cardsBox.append(newCardEl);
+
+}
 function addNewCatFromForm(e) {
     e.preventDefault();
-    const dataFromForm = [...formNewCat.elements];
-    console.log(dataFromForm );
-    const dataNewCat = serializeForm(dataFromForm);
-    console.log(dataNewCat);
-    const card = new Card(dataNewCat, '#card-template');
-    const newCardEl = card.getElement();    
-    cardsBox.append(newCardEl);
-    popupNewCat.close();
+    const dataFromForm = [...formNewCat.elements];  
+    const dataNewCat = serializeForm(dataFromForm); 
+    api.addNewCat(dataNewCat)
+        .then(()=> {
+            createCat(dataNewCat);
+            popupNewCat.close();
+        })      
+ 
    
 }
-
-cats.forEach(function(catInfo) {
-    const card = new Card(catInfo, '#card-template');
-    const newCardEl = card.getElement();    
-    cardsBox.append(newCardEl);
-});
-
 const popupNewCat = new Popup ("popup-add-cat");
-
 btnAddCat.addEventListener('click', () => popupNewCat.open());
 formNewCat.addEventListener('submit', addNewCatFromForm);
 popupNewCat.setAddEventListener();
+
+const api = new Api(CONFIG_API);
+api.getAllCats()
+    .then(({data}) => {
+        data.forEach(function(catInfo) {
+            createCat(catInfo);
+        });
+    });
+
