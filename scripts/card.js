@@ -8,7 +8,7 @@ class Card {
     }
     getElement(){
         this.element = this._getTemplate().cloneNode(true);
-        const cardName = this.element.querySelector('.card__link');
+        const cardName = this.element.querySelector('.card__title');
         const cardImg = this.element.querySelector('.card__img');
         const cardLike = this.element.querySelector('.card__like');
         if(!this._data.favourite){

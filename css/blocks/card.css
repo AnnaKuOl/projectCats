@@ -26,8 +26,12 @@
   
 
 }
+.card__title {
+    font-style: 22px;
+    font-weight: normal;
+}
 
-.card__link:hover:after {
+.card__title:hover:after {
     font: var(--fa-font-solid);
     content: "\f00e";
     display: inline-block;
