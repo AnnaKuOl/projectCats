@@ -52,3 +52,7 @@ api.getAllCats()
         });
     });
 
+// document.cookie = 'email=kuzann@mail.ru;max-age=600';
+localStorage.setItem('name', JSON.stringify({name:"vasya"}));
+console.log (JSON.parse(localStorage.getItem('name')));
+
