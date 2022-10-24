@@ -37,6 +37,7 @@ function loginFromForm(e) {
     const dataLogin = serializeForm(dataFromForm); 
     Cookies.set('email',`${dataLogin.email}`)
     popupLogin.close();
+    btnAddCat.classList.remove('visually-hidden');
    
 }
 
@@ -97,5 +98,8 @@ popupLogin.setAddEventListener();
 
 const isLogin = Cookies.get('email');
 if(!isLogin){
-    popupLogin.open()
+    popupLogin.open();
+    
+}else {
+    btnAddCat.classList.remove('visually-hidden');
 }
