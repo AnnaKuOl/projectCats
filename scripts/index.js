@@ -1,7 +1,11 @@
 const cardsBox = document.querySelector('.cards');
 const btnAddCat = document.querySelector("#add");
-const formNewCat = document.querySelector('#form__add-new-cat');
+const btnLogin = document.querySelector("#login");
 
+const formLogin = document.querySelector('#form__login');
+const formNewCat = document.querySelector('#form__add-new-cat');
+const api = new Api(CONFIG_API);
+const LIVE_LOCAL_STORAGE = 60;
 
 
 function serializeForm(elements) {
@@ -27,6 +31,17 @@ function createCat (data){
     cardsBox.append(newCardEl);
 
 }
+function loginFromForm(e) {
+    e.preventDefault();
+    const dataFromForm = [...formLogin.elements];  
+    const dataLogin = serializeForm(dataFromForm); 
+    Cookies.set('email',`${dataLogin.email}`)
+    popupLogin.close();
+   
+}
+
+
+
 function addNewCatFromForm(e) {
     e.preventDefault();
     const dataFromForm = [...formNewCat.elements];  
@@ -39,20 +54,48 @@ function addNewCatFromForm(e) {
  
    
 }
-const popupNewCat = new Popup ("popup-add-cat");
-btnAddCat.addEventListener('click', () => popupNewCat.open());
-formNewCat.addEventListener('submit', addNewCatFromForm);
-popupNewCat.setAddEventListener();
+function setDataRefresh(min) {
+    const setTime = new Date(new Date().getTime() + min * 60000);
+    localStorage.setItem('catsRefresh', setTime);
+    return setTime;
 
-const api = new Api(CONFIG_API);
-api.getAllCats()
-    .then(({data}) => {
-        data.forEach(function(catInfo) {
-            createCat(catInfo);
+}
+    
+
+function checkLocalStorage() {
+    const dataLocal =  JSON.parse(localStorage.getItem('cats'));
+    const getTimeEnd = localStorage.getItem('catsRefresh');
+   
+    if (dataLocal && dataLocal.length && new Date() < new Date(getTimeEnd)){
+        dataLocal.forEach(function(catInfo) {
+                createCat(catInfo);
+        })
+    } else {
+        api.getAllCats()
+        .then(({data}) => {
+            data.forEach(function(catInfo) {
+                createCat(catInfo);
+            });
+            localStorage.setItem('cats', JSON.stringify(data));
+            setDataRefresh(LIVE_LOCAL_STORAGE);
         });
-    });
+       
 
-// document.cookie = 'email=kuzann@mail.ru;max-age=600';
-localStorage.setItem('name', JSON.stringify({name:"vasya"}));
-console.log (JSON.parse(localStorage.getItem('name')));
+    }
+}
 
+checkLocalStorage();
+
+const popupNewCat = new Popup ("popup-add-cat");
+const popupLogin = new Popup ("popup-login");
+btnAddCat.addEventListener('click', () => popupNewCat.open());
+btnLogin.addEventListener('click', () => popupLogin.open());
+formNewCat.addEventListener('submit', addNewCatFromForm);
+formLogin.addEventListener('submit', loginFromForm);
+popupNewCat.setAddEventListener();
+popupLogin.setAddEventListener();
+
+const isLogin = Cookies.get('email');
+if(!isLogin){
+    popupLogin.open()
+}

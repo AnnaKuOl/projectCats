@@ -7,6 +7,7 @@
     <title>Favorite Cats</title>
     <script src="https://kit.fontawesome.com/b653633a88.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js" defer></script>
 </head>
 <body class="page">
     <header class="header">
@@ -16,6 +17,7 @@
                 
             </div>            
             <button class="btn" id="add"><i class="fa-solid fa-plus"></i></button>
+            <button class="btn" id="login"><i class="fa-solid fa-right-to-bracket"></i>Войти</button>
         </div>
     </header>
     <main class="main container">
@@ -56,6 +58,46 @@
                 <button type="submit" class="form__btn btn ">Добавить котика</button>
 
             </form>
+        </div>
+    </div>
+    <div class="popup popup-login">
+        <div class="popup__container">
+            <h2 class="popup__title">Войти в аккаунт</h2>
+            <button class="popup__close-btn btn"><i class="fa-solid fa-xmark"></i></button>            
+            <form action="#" class="form" id ="form__login">
+                <input type="email" placeholder="email" class="form__input" name="email" >
+                <input type="password"  placeholder="password" class="form__input" name="password">
+                <button type="submit" class="form__btn btn ">Войти</button>
+
+            </form>
+        </div>
+    </div>
+    <div class="popup popup__cat-info ">
+        <div class="popup__container popup__container-info">
+            <button class="popup__btn-close btn"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="popup__btn-group" >
+                <button class="popup__btn btn-change"><i class="fa-sharp fa-solid fa-pen-to-square"></i>Редактировать</button>
+                <button class="popup__btn btn-delete"><i class="fa-solid fa-trash"></i>Удалить</i></button>
+            </div>
+            <div class="popup__img"></div>
+            <div class="popup__cat-id">id</div>
+            <div class="popup__cat-name">Имя </div>
+            <div class="popup__cat-age">Возраст</div>
+            <div class="popup__cat-rate">Рейтинг 
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+            </div>
+            <textarea name="description"class="popup__cat-description">Про кота </textarea>
+            
+            
+       
         </div>
     </div>
     <template id="card-template">

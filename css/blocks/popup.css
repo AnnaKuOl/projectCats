@@ -20,6 +20,8 @@
     padding: 20px;
     position: relative;
 
+}.popup__title{
+    margin-top: 0;
 }
 .popup__close-btn{
     position: absolute;
