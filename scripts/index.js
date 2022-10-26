@@ -12,7 +12,10 @@ const LIVE_LOCAL_STORAGE = 60;
 
 function serializeForm(elements) {
     const dataForm = {};
+    console.log(elements);
+   
     elements.forEach(elem => {
+        // console.log(elem);
         if (elem.type === "submit"){
             return;
         }
@@ -21,8 +24,14 @@ function serializeForm(elements) {
             dataForm[elem.name] = elem.value;
         }
         if (elem.type === "checkbox") {
+           
             dataForm[elem.name] = elem.checked;
+
+            
+            console.log (elem.checked);
+
         }
+        
     })
     console.log (dataForm);
     return dataForm;
@@ -35,7 +44,8 @@ function createCat (data){
 }
 function loginFromForm(e) {
     e.preventDefault();
-    const dataFromForm = [...formLogin.elements];  
+    const dataFromForm = [...formLogin.elements]; 
+    
     const dataLogin = serializeForm(dataFromForm); 
     Cookies.set('email',`${dataLogin.email}`)
     popupLogin.close();
@@ -46,15 +56,25 @@ function loginFromForm(e) {
 function addNewCatFromForm(e) {
     e.preventDefault();
     const dataFromForm = [...formNewCat.elements];  
+    // console.log(dataFromForm );
+    // console.log(formNewCat );
     const dataNewCat = serializeForm(dataFromForm); 
+    console.log(dataNewCat);
     api.addNewCat(dataNewCat)
         .then(()=> {
             createCat(dataNewCat);
             popupNewCat.close();
+            const cats = JSON.parse(localStorage.getItem('cats'));
+            cats.push(dataNewCat);
+                      
+            localStorage.setItem('cats', JSON.stringify(cats));
+            setDataRefresh(LIVE_LOCAL_STORAGE);
         })      
  
    
 }
+
+
 function setDataRefresh(min) {
     const setTime = new Date(new Date().getTime() + min * 60000);
     localStorage.setItem('catsRefresh', setTime);
@@ -83,23 +103,7 @@ function checkLocalStorage() {
     }
 }
 checkLocalStorage();
-// function showCatInfo() {
-//     const cardInfo = document.querySelector(".popup__container-info");
 
-// const catImg = cardInfo.querySelector(".popup__img");
-// const catId = cardInfo.querySelector(".popup__cat-id");
-// const catName = cardInfo.querySelector(".popup__cat-name");
-// const catAge = cardInfo.querySelector(".popup__age");
-// const catRate = cardInfo.querySelector(".popup__rate");
-// const catDescription = cardInfo.querySelector(".popup__cat-description");
-// console.log(catImg,catId,    catName,    catAge,    catRate,    catDescription );
-//     //найти поля с информацией
-//     // 
-
-
-
-// }
-// showCatInfo();
 
 function createCatInfoCard (data) {
     if (!!popupCardInfo.children.length){            
@@ -126,7 +130,7 @@ function getCatInfo (id) {
     api.getCatById(id)
     .then (({data}) => {
         const dataInfo = data;
-        console.log(dataInfo);
+       
         createCatInfoCard (dataInfo) ;       
     })}
 }
