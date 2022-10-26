@@ -75,14 +75,32 @@
         </div>
     </div>
     <div class="popup popup__cat-info ">
+        
+    </div>
+    <template id="card-template">
+        <div class="card">
+            
+            <img src="#" class="card__img" alt="whiteCat">
+            <a href="#" class="card__link">
+                <p class="card__id visually-hidden"></p>
+                <h3 class="card__title">
+                    
+                </h3>
+                
+            </a>
+            <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
+        </div> 
+    </template>
+    <template id="info-template">
         <div class="popup__container popup__container-info">
-            <button class="popup__btn-close btn"><i class="fa-solid fa-xmark"></i></button>
+            <button class="popup__close-btn popup__btn-close btn"><i class="fa-solid fa-xmark"></i></button>
             
             <div class="popup__btn-group" >
                 <button class="popup__btn btn-change"><i class="fa-sharp fa-solid fa-pen-to-square"></i>Редактировать</button>
                 <button class="popup__btn btn-delete"><i class="fa-solid fa-trash"></i>Удалить</i></button>
             </div>
-            <div class="popup__img"></div>
+            <img src="#" class="popup__cat-img" alt="whiteCat">
+            
             <div class="popup__cat-id">id</div>
             <div class="popup__cat-name">Имя </div>
             <div class="popup__cat-age">Возраст</div>
@@ -101,13 +119,6 @@
             
        
         </div>
-    </div>
-    <template id="card-template">
-        <div class="card">
-            <img src="#" class="card__img" alt="whiteCat">
-            <a href="#" class="card__link"><h3 class="card__title"></h3></a>
-            <button class="card__like" aria-label="Поставить лайк"><i class="fa-solid fa-heart fa-2x"></i></button>
-        </div> 
     </template>
 
     <script src="./scripts/api.js" defer></script>

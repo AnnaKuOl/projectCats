@@ -1,8 +1,9 @@
 .popup__cat-info {
-
+    
 }
 .popup__container-info {
- 
+    height: 250px;
+    width: 500px;
     border-radius: 8px;
     background-color: var(--outline-color);
     display: grid;
@@ -43,21 +44,27 @@
     gap: 10px;
     cursor: pointer;
 }
-.popup__img{
+.popup__cat-img{
+
+    display: block;
+    object-fit: cover;
     grid-row: span 4;
-    min-width: 150px;
-    width: 100%;
-    background-image: url(https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg);    
-    background-size: cover;
+   
+    height: 150px;
+    width: 200px;
+    
+    /* background-size: cover; */
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; 
 
 }
 .popup__cat-id{
     grid-column: span 2;
+    padding-right: 100px;
 }
 .popup__cat-name{
     grid-column: span 2;
+    padding-right: 100px;
 
 }
 .popup__cat-rate{

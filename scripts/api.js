@@ -40,9 +40,9 @@ class Api {
 
 
     getCatById(idCat){
-        fetch(`${this._url}/show/${idCat}`, {
+        return fetch(`${this._url}/show/${idCat}`, {
             method: 'GET',
-        })
+        }).then(this._onResponce)
     }
 
 
