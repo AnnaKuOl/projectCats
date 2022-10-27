@@ -12,7 +12,7 @@ class Card {
         const cardId = this.element.querySelector('.card__id');
         const cardImg = this.element.querySelector('.card__img');
         const cardLike = this.element.querySelector('.card__like'); 
-        console.log(this._data) ;
+        
         if(this._data.favourite){
             cardLike.classList.add('card__like-active');
         }
@@ -32,7 +32,7 @@ class CardInfo extends Card {
         return document.querySelector(this._selectorTemp).content.querySelector('.popup__container-info');
     }
     getElement(){
-        console.log(this.element)
+        
         this.element = this._getTemplate().cloneNode(true);
         const cardName = this.element.querySelector('.popup__cat-name');
         const cardId = this.element.querySelector('.popup__cat-id');
@@ -43,9 +43,9 @@ class CardInfo extends Card {
         const cardDescription = this.element.querySelector('.popup__cat-description');
        
 
-        if(this._data.favourite){
-            cardLike.classList.add('card__like-active');
-        }
+        // if(this._data.favourite){
+        //     cardLike.classList.add('card__like-active');
+        // }
         cardName.textContent = `Имя: ${this._data.name}`;
         cardId.textContent = `ID: ${this._data.id}`;
         cardAge.textContent = `Возраст: ${this._data.age}`;
@@ -54,9 +54,7 @@ class CardInfo extends Card {
        
         return this.element;
     }
-    deleteElement(){
-        console.log(this.element);
-    }
+   
 
 }
 

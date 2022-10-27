@@ -1,5 +1,5 @@
 const CONFIG_API = {
-    url: 'https://sb-cats.herokuapp.com/api/2/annakuol',
+    url: 'http://sb-cats.herokuapp.com/api/2/annakuol',
     headers: {
         'Content-type': 'application/json'
     }
