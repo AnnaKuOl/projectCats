@@ -38,7 +38,7 @@ class CardInfo extends Card {
         const cardId = this.element.querySelector('.popup__cat-id');
         const cardImg = this.element.querySelector('.popup__cat-img');
         const cardLike = this.element.querySelector('.card__like');
-        // const cardRate = this.element.querySelector('.popup__cat-rate');
+        const cardRate = this.element.querySelector('.popup__cat-rate');
         const cardAge = this.element.querySelector('.popup__cat-age');
         const cardDescription = this.element.querySelector('.popup__cat-description');
        
@@ -51,6 +51,12 @@ class CardInfo extends Card {
         cardAge.textContent = `Возраст: ${this._data.age}`;
         cardDescription.textContent = this._data.description;
         cardImg.src = this._data.img_link;
+        let numbRate = this._data.rate;
+        const starElem = this.element.querySelectorAll(".fa-star");
+        console.log(numbRate, starElem);
+        for(let i = 0; i < numbRate; i++){
+            starElem[i].classList.add("star-black")
+        }
        
         return this.element;
     }

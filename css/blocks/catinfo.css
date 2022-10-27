@@ -3,7 +3,7 @@
 }
 .popup__container-info {
     height: 250px;
-    width: 500px;
+    width: 550px;
     border-radius: 8px;
     background-color: var(--outline-color);
     display: grid;
@@ -39,7 +39,7 @@
     background-color: var(--bg-menu-color);
     border-radius: 10px;
     padding: 5px 5px;
-    color: var(--bg-dark-color));
+    color: var(--bg-dark-color);
     font-size: 10px;
     gap: 10px;
     cursor: pointer;
@@ -69,7 +69,15 @@
 }
 .popup__cat-rate{
     grid-column: span 2;
+   
 
+}
+.fa-star {
+ color: var(--bg-menu-color);;
+
+}
+.star-black {
+    color: var(--bg-dark-color);
 }
 .popup__cat-age{
 
@@ -83,5 +91,6 @@
     border: none;
     background-color: var(--outline-color);
     font-family: "Arial", "Helvetica", sans-serif;
+    padding-right: 50px;
 
 }

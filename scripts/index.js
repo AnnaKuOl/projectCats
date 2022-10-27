@@ -140,7 +140,7 @@ function getCatInfo (id) {
 function deleteCardCat() {
   popupCardInfo.addEventListener('click', (e)=>{    
     const popup = popupCardInfo.children;
-    console.log(e);
+    
     const popupChild = popup[0].children;
     const idCard = parseInt(popupChild[3].textContent.slice(3));
         if (e.target.classList.contains("btn-delete")) {
@@ -159,8 +159,37 @@ function deleteCardCat() {
     }
     )
 }
+    
+// popupCardInfo.addEventListener('click', (e)=> {
+//     let dataNew = '';
+//     if (e.target.classList.contains("btn-change")) {
+//         const discript = popupCardInfo.querySelector(".popup__cat-description");            
+//         discript.disabled = false;
+//         discript.focus();
+//         discript.textContent = "";
+//         console.log(e.target);            
+//         popupCardInfo.querySelector(".btn-save").classList.remove("visually-hidden"); 
+//         discript.addEventListener('keyup', (e)=>{
+//         console.log(e.key);
+//             dataNew = `${dataNew}${e.key}`;
+//             console.log(dataNew);
+            
+//         })  
+          
+//     }
+//     popupCardInfo.querySelector(".btn-save").addEventListener('click', (e) => { 
+//         e.target.classList.add("visually-hidden"); 
+//         discript.disabled = true;
+//     })
+        
 
+// })
+  
 
+// function saveInfo() {
+//   const newInfo ={};
+
+// }
 const popupNewCat = new Popup ("popup-add-cat");
 const popupLogin = new Popup ("popup-login");
 const popupCatInfo = new Popup ("popup__cat-info");
@@ -171,7 +200,7 @@ formNewCat.addEventListener('submit', addNewCatFromForm);
 formLogin.addEventListener('submit', loginFromForm);
 popupNewCat.setAddEventListener();
 popupLogin.setAddEventListener();
-popupCatInfo.setAddEventListener();
+popupCatInfo.setAddEventListener(); 
 
 
 const isLogin = Cookies.get('email');
