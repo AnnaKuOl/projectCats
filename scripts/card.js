@@ -34,21 +34,21 @@ class CardInfo extends Card {
     getElement(){
         
         this.element = this._getTemplate().cloneNode(true);
-        const cardName = this.element.querySelector('.popup__cat-name');
-        const cardId = this.element.querySelector('.popup__cat-id');
-        const cardImg = this.element.querySelector('.popup__cat-img');
+        const cardName = this.element.querySelector('.form__input-cat-name');
+        const cardId = this.element.querySelector('.form__input-cat-id');
+        const cardImg = this.element.querySelector('.form__cat-img');
         const cardLike = this.element.querySelector('.card__like');
-        const cardRate = this.element.querySelector('.popup__cat-rate');
-        const cardAge = this.element.querySelector('.popup__cat-age');
-        const cardDescription = this.element.querySelector('.popup__cat-description');
+        const cardRate = this.element.querySelector('.form__cat-rate');
+        const cardAge = this.element.querySelector('.form__input-cat-age');
+        const cardDescription = this.element.querySelector('.form__cat-description');
        
 
         // if(this._data.favourite){
         //     cardLike.classList.add('card__like-active');
         // }
-        cardName.textContent = `Имя: ${this._data.name}`;
-        cardId.textContent = `ID: ${this._data.id}`;
-        cardAge.textContent = `Возраст: ${this._data.age}`;
+        cardName.value = this._data.name;
+        cardId.value = this._data.id;
+        cardAge.value = this._data.age;
         cardDescription.textContent = this._data.description;
         cardImg.src = this._data.img_link;
         let numbRate = this._data.rate;

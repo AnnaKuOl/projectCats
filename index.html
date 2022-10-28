@@ -97,27 +97,32 @@
             
             <div class="popup__btn-group" >
                 <button class="popup__btn btn-change"><i class="fa-sharp fa-solid fa-pen-to-square"></i>Редактировать</button>
-                <button class="popup__btn btn-delete"><i class="fa-solid fa-trash"></i>Удалить</i></button>
-                <button class="popup__btn btn-save visually-hidden">Сохранить</button>
+                <button class="popup__btn btn-save unvisible"><i class="fa-sharp fa-solid fa-download"></i>Сохранить</button>
+                <button class="popup__btn btn-delete"><i class="fa-solid fa-trash"></i>Удалить</button>
+                
             </div>
-            <img src="#" class="popup__cat-img" alt="whiteCat">
+            <form action="#" class ="popup__form-cat-info">
+                <img src="#" class="form__cat-img" alt="whiteCat">
             
-            <div class="popup__cat-id">id</div>
-            <div class="popup__cat-name">Имя </div>
-            <div class="popup__cat-age">Возраст</div>
-            <div class="popup__cat-rate">Рейтинг 
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-            </div>
-            <textarea name="description" maxlength="100" class="popup__cat-description" disabled>Про кота </textarea>
+                <label class="form__cat-id">Id <input disabled type="text" name ="id" class="form__input-cat-id"> </label>
+                <label class="form__cat-name">Имя <input type="text" disabled class="form__input-cat-name" name ="name"></label>
+                <label class="form__cat-age">Возраст <input type="number" name = "age" class="form__input-cat-age" disabled></label>
+                <div class="form__cat-rate">Рейтинг 
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <textarea name="description" maxlength="100" class="form__cat-description" disabled>Про кота </textarea>
+
+            </form>
+           
             
             
             

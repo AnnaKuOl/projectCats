@@ -6,10 +6,14 @@
     width: 550px;
     border-radius: 8px;
     background-color: var(--outline-color);
+   
+}
+.popup__form-cat-info{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
     gap: 10px;
+
 }
 .popup__btn-close{
     color: var(--bg-dark-color);
@@ -43,8 +47,9 @@
     font-size: 10px;
     gap: 10px;
     cursor: pointer;
+    width: 100px;
 }
-.popup__cat-img{
+.form__cat-img{
 
     display: block;
     object-fit: cover;
@@ -58,17 +63,28 @@
     background-repeat: no-repeat; 
 
 }
-.popup__cat-id{
+.form__cat-id{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
     grid-column: span 2;
     padding-right: 100px;
 }
-.popup__cat-name{
+.form__cat-name{
     grid-column: span 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
     padding-right: 100px;
 
 }
-.popup__cat-rate{
+.form__cat-rate{
     grid-column: span 2;
+    display: flex;
+    align-items: center;
+    gap: 5px;
    
 
 }
@@ -79,10 +95,34 @@
 .star-black {
     color: var(--bg-dark-color);
 }
-.popup__cat-age{
-
+.form__cat-age{
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    padding-right: 100px;
 }
-.popup__cat-description{
+
+.popup__form-cat-info input {
+    overflow: hidden;
+    border: none;
+    background-color: var(--outline-color);
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-size: 16px;
+    color: var(--bg-dark-color);
+}
+
+.form__input-cat-id{
+  
+}
+.form__input-cat-name{
+    
+}
+.form__input-cat-age{
+    
+}
+.form__cat-description{
     overflow: hidden;
     grid-column: span 3;
     grid-row: span 5;
@@ -92,5 +132,9 @@
     background-color: var(--outline-color);
     font-family: "Arial", "Helvetica", sans-serif;
     padding-right: 50px;
+    color: var(--bg-dark-color);
 
+}
+.unvisible {
+    display: none;
 }
