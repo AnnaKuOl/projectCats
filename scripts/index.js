@@ -13,6 +13,7 @@ function serializeForm(elements) {
     const dataForm = {};   
     elements.forEach(elem => {        
         if (elem.type === "submit"){
+           
             return;
         }
         if (elem.type !== "checkbox"){
@@ -20,7 +21,8 @@ function serializeForm(elements) {
         }
         if (elem.type === "checkbox") {           
             dataForm[elem.name] = elem.checked;
-        }        
+        }   
+           
     })    
     return dataForm;
 }
@@ -126,10 +128,19 @@ function getCatInfo (id) {
     })}
 }
 
-function deleteCardCat() {
-  popupCardInfo.addEventListener('click', (e)=>{    
-    const idCard = popupCardInfo.querySelector(".form__input-cat-id").value;  
-        if (e.target.classList.contains("btn-delete")) {            
+
+    
+popupCardInfo.addEventListener('click', (e)=> {
+    e.preventDefault();
+    const discript = popupCardInfo.querySelector(".form__cat-description"); 
+    const age =  popupCardInfo.querySelector(".form__input-cat-age");
+    const like =  popupCardInfo.querySelector(".form__cat-like");
+    const btnSave =   popupCardInfo.querySelector(".btn-save");  
+    const btnChange =   popupCardInfo.querySelector(".btn-change");  
+
+    if(e.target.classList.contains("btn-delete") || e.target.closest(".fa-trash")){
+        const idCard = popupCardInfo.querySelector(".form__input-cat-id").value;  
+        {            
             api.deleteCatById(idCard)
                 .then(()=>{                   
                     localStorage.removeItem('cats');
@@ -137,32 +148,35 @@ function deleteCardCat() {
                 })  
                 popupCatInfo.close();           
         }  
-    })
-}
-    
-popupCardInfo.addEventListener('click', (e)=> {
-  
-    const discript = popupCardInfo.querySelector(".form__cat-description"); 
-    const btnSave =   popupCardInfo.querySelector(".btn-save");  
-    const btnChange =   popupCardInfo.querySelector(".btn-change");  
 
-    if (e.target.classList.contains("btn-change")) {       
+    }
+
+    if (e.target.classList.contains("btn-change") || e.target.closest(".fa-pen-to-square")) {       
         discript.toggleAttribute("disabled");
-        discript.focus();
-        discript.textContent = "";
-        console.log(e.target);            
+        age.classList.add("focus");
+        discript.classList.add("focus");
+        age.toggleAttribute("disabled");
+        // like.toggleAttribute("disabled");
+        
+        
+        // console.log(e.target);            
         btnSave.classList.toggle("unvisible"); 
         btnChange.classList.toggle("unvisible");
 
           
     }
-    btnSave.addEventListener('click', (e) => { 
+
+    if (e.target.classList.contains("btn-save") || e.target.closest(".fa-download")){ 
         discript.toggleAttribute("disabled");
+        age.toggleAttribute("disabled");
+        like.toggleAttribute("disabled");
+        age.classList.remove("focus")
+        discript.classList.remove("focus");
         btnSave.classList.toggle("unvisible"); 
         btnChange.classList.toggle("unvisible");
         const formAboutCat = document.querySelector(".popup__form-cat-info");
         const CatInfo = [...formAboutCat.elements];
-        console.log(CatInfo);
+        // console.log(CatInfo);
 
         const newCatInfo = serializeForm(CatInfo);
         
@@ -171,9 +185,9 @@ popupCardInfo.addEventListener('click', (e)=> {
             api.updateCatById(idCard, newCatInfo )
                 .then(()=> {
                     const dataLocalCats = JSON.parse(localStorage.getItem('cats'));
-                    console.log (dataLocalCats);
+                    // console.log (dataLocalCats);
                     const newDataLocal = dataLocalCats.map((localInfo) => {
-                        console.log( localInfo.id);
+                        // console.log( localInfo.id);
                         if(localInfo.id == idCard ){
                             console.log(localInfo, newCatInfo);
                             localInfo = {...localInfo, ...newCatInfo}; 
@@ -189,7 +203,7 @@ popupCardInfo.addEventListener('click', (e)=> {
             setDataRefresh(LIVE_LOCAL_STORAGE);
                 })      
         
-    })     
+    } 
 
 })
 

@@ -50,7 +50,7 @@
                 <input type="number"  placeholder="Возраст" class="form__input" name="age">
                 <input type="text" placeholder="Имя" class="form__input" name="name" required>
                 <input type="number" placeholder="Рейтинг (0-10)" class="form__input" name="rate" min="0" max="10">
-                <textarea name="description" class="form__input form__textarea" placeholder="Описание"></textarea>
+                <textarea name="description" class="form__input form__textarea" maxlength="140" placeholder="Описание"></textarea>
                 <label class ="form__checkbox-group">
                     <input type="checkbox" name="favourite" class="form__checkbox" placeholder="">
                     <span class="form__checkbox-name">Любимчик</span>
@@ -103,7 +103,7 @@
             </div>
             <form action="#" class ="popup__form-cat-info">
                 <img src="#" class="form__cat-img" alt="whiteCat">
-            
+                <button class="form__cat-like card__like" aria-label="Поставить лайк" disabled><i class="fa-solid fa-heart fa-3x"></i></button>
                 <label class="form__cat-id">Id <input disabled type="text" name ="id" class="form__input-cat-id"> </label>
                 <label class="form__cat-name">Имя <input type="text" disabled class="form__input-cat-name" name ="name"></label>
                 <label class="form__cat-age">Возраст <input type="number" name = "age" class="form__input-cat-age" disabled></label>
@@ -119,7 +119,7 @@
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star"></i>
                 </div>
-                <textarea name="description" maxlength="100" class="form__cat-description" disabled>Про кота </textarea>
+                <textarea name="description" maxlength="140" class="form__cat-description" disabled>Про кота </textarea>
 
             </form>
            
