@@ -49,6 +49,10 @@ function loginFromForm(e) {
   Cookies.set("email", `${dataLogin.email}`); // вносим данные из формы в куки
   popupLogin.close();
   btnAddCat.classList.remove("visually-hidden"); //открывает кнопку добавления котиков
+  const allCardLink = cardsBox.querySelectorAll('.card__link');
+  allCardLink.forEach((link)=>{
+    link.classList.remove('disabled')
+  });
 }
 function addNewCatFromForm(e) {
   e.preventDefault();
@@ -126,7 +130,7 @@ function getCatInfo(id) {
     });
   }
 }
-
+/* С этой функцией хочу поработать, перенести ее действия в класс  */
 popupCardInfo.addEventListener("click", (e) => {
   e.preventDefault();
   const discript = popupCardInfo.querySelector(".form__cat-description");
@@ -214,4 +218,10 @@ if (!isLogin) {
   popupLogin.open();
 } else {
   btnAddCat.classList.remove("visually-hidden");
+  const allCardLink = cardsBox.querySelectorAll('.card__link');
+  allCardLink.forEach((link)=>{
+    link.classList.remove('disabled')
+  });
+  
+
 }

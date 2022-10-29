@@ -23,9 +23,13 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 18px;
-    font-weight: normal;
-  
+    font-weight: normal;  
 
+}
+
+.disabled {
+    pointer-events: none; 
+    cursor: default; 
 }
 .card__title {
     font-style: 22px;
