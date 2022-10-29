@@ -1,230 +1,217 @@
-const cardsBox = document.querySelector('.cards');
+const cardsBox = document.querySelector(".cards");
 const btnAddCat = document.querySelector("#add");
 const btnLogin = document.querySelector("#login");
-const formLogin = document.querySelector('#form__login');
-const formNewCat = document.querySelector('#form__add-new-cat');
+const formLogin = document.querySelector("#form__login");
+const formNewCat = document.querySelector("#form__add-new-cat");
 const popupCardInfo = document.querySelector(".popup__cat-info");
 
 const api = new Api(CONFIG_API);
-const LIVE_LOCAL_STORAGE = 60;
+const LIVE_LOCAL_STORAGE = 60; //время жизни локального хранилища
 
-
+/* функция получения объекта с данными из формы*/
 function serializeForm(elements) {
-    const dataForm = {};   
-    elements.forEach(elem => {        
-        if (elem.type === "submit"){
-           
-            return;
-        }
-        if (elem.type !== "checkbox"){
-            dataForm[elem.name] = elem.value;
-        }
-        if (elem.type === "checkbox") {           
-            dataForm[elem.name] = elem.checked;
-        }   
-           
-    })    
-    return dataForm;
+  const dataForm = {};
+  elements.forEach((elem) => {
+    if (elem.type === "submit") {
+      return;
+    }
+    if (elem.type !== "checkbox") {
+      dataForm[elem.name] = elem.value;
+    }
+    if (elem.type === "checkbox") {
+      dataForm[elem.name] = elem.checked;
+    }
+  });
+  return dataForm;
 }
-function openCatInfo(card){
-    const cardLink = card.querySelector(".card__link");
-    cardLink.addEventListener('click',(e) => {
-            e.preventDefault();
-            const id = e.target.closest('.card__link').querySelector(".card__id");
-            getCatInfo(id.textContent); 
-        });    
-
-}
-
-function createCat (data){
-    const card = new Card(data, '#card-template');
-    const newCardEl = card.getElement(); 
-    openCatInfo(newCardEl)  ;
-       
-    cardsBox.append(newCardEl);
-
-}
-function loginFromForm(e) {
+/*функция открытия карточки по нажатию на кнопку */
+function openCatInfo(card) {
+  const cardLink = card.querySelector(".card__link");
+  cardLink.addEventListener("click", (e) => {
     e.preventDefault();
-    const dataFromForm = [...formLogin.elements];     
-    const dataLogin = serializeForm(dataFromForm); 
-    Cookies.set('email',`${dataLogin.email}`)
-    popupLogin.close();
-    btnAddCat.classList.remove('visually-hidden');   
+    const id = e.target.closest(".card__link").querySelector(".card__id");
+    getCatInfo(id.textContent);
+  });
+}
+/* наполнение карточками секции*/
+function createCat(data) {
+  const card = new Card(data, "#card-template"); //создание экземпляра класса карточки
+  const newCardEl = card.getElement(); // вызов метода по наполнению карточкой информацией  из БД
+  openCatInfo(newCardEl); // вещаю событие дл отрытия подробной информации по клику на имя кота
+
+  cardsBox.append(newCardEl); //добавляю карточку в скцию
+}
+/* функция для авторизации */
+function loginFromForm(e) {
+  e.preventDefault();
+  const dataFromForm = [...formLogin.elements]; //получение элементов формы авторизации
+  const dataLogin = serializeForm(dataFromForm); //получаем данные из формы
+  Cookies.set("email", `${dataLogin.email}`); // вносим данные из формы в куки
+  popupLogin.close();
+  btnAddCat.classList.remove("visually-hidden"); //открывает кнопку добавления котиков
 }
 function addNewCatFromForm(e) {
-    e.preventDefault();
-    const dataFromForm = [...formNewCat.elements];  
-   
-    const dataNewCat = serializeForm(dataFromForm); 
- 
-    api.addNewCat(dataNewCat)
-        .then(()=> {
-            createCat(dataNewCat);
-            popupNewCat.close();
-            const cats = JSON.parse(localStorage.getItem('cats'));
-            cats.push(dataNewCat);
-                      
-            localStorage.setItem('cats', JSON.stringify(cats));
-            setDataRefresh(LIVE_LOCAL_STORAGE);
-        })  
-   
+  e.preventDefault();
+  const dataFromForm = [...formNewCat.elements]; //получение элементов формы добавлния котика
+  const dataNewCat = serializeForm(dataFromForm); //получаем данные из формы
+
+  api
+    .addNewCat(dataNewCat) // отправляем данные на сервер
+    .then(() => {
+      createCat(dataNewCat); //создаем новую карточку в секции с новыми данными
+      popupNewCat.close(); // закрываем попап добавления котика
+      const cats = JSON.parse(localStorage.getItem("cats")); //получаем данный из локального хранилища
+      cats.push(dataNewCat); //добавляем туда информацию о новм коте
+
+      localStorage.setItem("cats", JSON.stringify(cats)); //отправляем обновленныу информацию на локальное хранилище
+      setDataRefresh(LIVE_LOCAL_STORAGE); //устаналиваем новую дату жизни локального храниища
+    });
 }
 function setDataRefresh(min) {
-    const setTime = new Date(new Date().getTime() + min * 60000);
-    localStorage.setItem('catsRefresh', setTime);
-    return setTime;
+  const setTime = new Date(new Date().getTime() + min * 60000); //получаем дату просрочки локального хранилища
+  localStorage.setItem("catsRefresh", setTime); //добавляем эту информацию в локальне хранилище
+  return setTime;
+}
 
-}    
+/* функция проверки нужно ли создавать карточку кота из локального хранилища или из БД и обновить локальное хранилище */
 function checkLocalStorage() {
-    const dataLocal =  JSON.parse(localStorage.getItem('cats'));
-    const getTimeEnd = localStorage.getItem('catsRefresh');
-   
-    if (dataLocal && dataLocal.length && new Date() < new Date(getTimeEnd)){
-        dataLocal.forEach(function(catInfo) {
-                createCat(catInfo);
-        })
-    } else {
-        api.getAllCats()
-        .then(({data}) => {
-            data.forEach(function(catInfo) {
-                createCat(catInfo);
-            });
-            localStorage.setItem('cats', JSON.stringify(data));
-            setDataRefresh(LIVE_LOCAL_STORAGE);
-        });    
+  const dataLocal = JSON.parse(localStorage.getItem("cats"));
+  const getTimeEnd = localStorage.getItem("catsRefresh");
 
-    }
+  if (dataLocal && dataLocal.length && new Date() < new Date(getTimeEnd)) {
+    dataLocal.forEach(function (catInfo) {
+      createCat(catInfo);
+    });
+  } else {
+    api.getAllCats().then(({ data }) => {
+      data.forEach(function (catInfo) {
+        createCat(catInfo);
+      });
+      localStorage.setItem("cats", JSON.stringify(data));
+      setDataRefresh(LIVE_LOCAL_STORAGE);
+    });
+  }
 }
 checkLocalStorage();
-function createCatInfoCard (data) {
-    if (!!popupCardInfo.children.length){            
-        popupCardInfo.innerHTML = "";
-    }
-    const newCardInfo = new CardInfo(data, '#info-template')
-    const newCard = newCardInfo.getElement();   
-                 
-    popupCardInfo.append(newCard); 
-    popupCatInfo.open();     
-    deleteCardCat();
+/* функция создания карточки с подробной информацией о коте в попапе */
+function createCatInfoCard(data) {
+  if (!!popupCardInfo.children.length) {
+    //проверка была ли уже создана каточка в попапе и очистка попапа если карточка была
+    popupCardInfo.innerHTML = "";
+  }
+  const newCardInfo = new CardInfo(data, "#info-template"); //создаем экземпляр карточки подробной информации
+  const newCard = newCardInfo.getElement(); //добавляем туда информацию
 
-}
-function getCatInfo (id) {
-    const dataLocal =  JSON.parse(localStorage.getItem('cats'));
-    const getTimeEnd = localStorage.getItem('catsRefresh');
-   
-    if (dataLocal && dataLocal.length && new Date() < new Date(getTimeEnd)){
-        dataLocal.forEach(elem =>{
-            if (elem.id == id){
-                createCatInfoCard (elem);
-            }            
-        })  
-    }else {
-    api.getCatById(id)
-    .then (({data}) => {
-        const dataInfo = data;
-       
-        createCatInfoCard (dataInfo) ;       
-    })}
+  popupCardInfo.append(newCard); //добавляем карточку в попап
+  popupCatInfo.open(); //открываем попап с получившейся карточкой
 }
 
+/*Получение данных о коте по id из БД или локального хранилища и создание на их осноекарточки */
+function getCatInfo(id) {
+  const dataLocal = JSON.parse(localStorage.getItem("cats"));
+  const getTimeEnd = localStorage.getItem("catsRefresh");
 
-    
-popupCardInfo.addEventListener('click', (e)=> {
-    e.preventDefault();
-    const discript = popupCardInfo.querySelector(".form__cat-description"); 
-    const age =  popupCardInfo.querySelector(".form__input-cat-age");
-    const like =  popupCardInfo.querySelector(".form__cat-like");
-    const btnSave =   popupCardInfo.querySelector(".btn-save");  
-    const btnChange =   popupCardInfo.querySelector(".btn-change");  
+  if (dataLocal && dataLocal.length && new Date() < new Date(getTimeEnd)) {
+    //создание карточки из локального храниища если дата жизни не прошла
+    dataLocal.forEach((elem) => {
+      if (elem.id == id) {
+        createCatInfoCard(elem);
+      }
+    });
+  } else {
+    //создание карточки из БД
+    api.getCatById(id).then(({ data }) => {
+      const dataInfo = data;
+      createCatInfoCard(dataInfo);
+    });
+  }
+}
 
-    if(e.target.classList.contains("btn-delete") || e.target.closest(".fa-trash")){
-        const idCard = popupCardInfo.querySelector(".form__input-cat-id").value;  
-        {            
-            api.deleteCatById(idCard)
-                .then(()=>{                   
-                    localStorage.removeItem('cats');
-                    location.reload();                    
-                })  
-                popupCatInfo.close();           
-        }  
+popupCardInfo.addEventListener("click", (e) => {
+  e.preventDefault();
+  const discript = popupCardInfo.querySelector(".form__cat-description");
+  const age = popupCardInfo.querySelector(".form__input-cat-age");
+  const like = popupCardInfo.querySelector(".form__cat-like");
+  const btnSave = popupCardInfo.querySelector(".btn-save");
+  const btnChange = popupCardInfo.querySelector(".btn-change");
 
+  if (
+    e.target.classList.contains("btn-delete") ||
+    e.target.closest(".fa-trash")
+  ) {
+    const idCard = popupCardInfo.querySelector(".form__input-cat-id").value;
+    {
+      api.deleteCatById(idCard).then(() => {
+        localStorage.removeItem("cats");
+        location.reload();
+      });
+      popupCatInfo.close();
     }
+  }
 
-    if (e.target.classList.contains("btn-change") || e.target.closest(".fa-pen-to-square")) {       
-        discript.toggleAttribute("disabled");
-        age.classList.add("focus");
-        discript.classList.add("focus");
-        age.toggleAttribute("disabled");
-        // like.toggleAttribute("disabled");
-        
-        
-        // console.log(e.target);            
-        btnSave.classList.toggle("unvisible"); 
-        btnChange.classList.toggle("unvisible");
+  if (
+    e.target.classList.contains("btn-change") ||
+    e.target.closest(".fa-pen-to-square")
+  ) {
+    discript.toggleAttribute("disabled");
+    age.classList.add("focus");
+    discript.classList.add("focus");
+    age.toggleAttribute("disabled");
+    btnSave.classList.toggle("unvisible");
+    btnChange.classList.toggle("unvisible");
+  }
 
-          
-    }
+  if (
+    e.target.classList.contains("btn-save") ||
+    e.target.closest(".fa-download")
+  ) {
+    discript.toggleAttribute("disabled");
+    age.toggleAttribute("disabled");
+    like.toggleAttribute("disabled");
+    age.classList.remove("focus");
+    discript.classList.remove("focus");
+    btnSave.classList.toggle("unvisible");
+    btnChange.classList.toggle("unvisible");
+    const formAboutCat = document.querySelector(".popup__form-cat-info");
+    const CatInfo = [...formAboutCat.elements];
+    const newCatInfo = serializeForm(CatInfo);
 
-    if (e.target.classList.contains("btn-save") || e.target.closest(".fa-download")){ 
-        discript.toggleAttribute("disabled");
-        age.toggleAttribute("disabled");
-        like.toggleAttribute("disabled");
-        age.classList.remove("focus")
-        discript.classList.remove("focus");
-        btnSave.classList.toggle("unvisible"); 
-        btnChange.classList.toggle("unvisible");
-        const formAboutCat = document.querySelector(".popup__form-cat-info");
-        const CatInfo = [...formAboutCat.elements];
-        // console.log(CatInfo);
+    const idCard = newCatInfo.id;
 
-        const newCatInfo = serializeForm(CatInfo);
-        
-        const idCard = newCatInfo.id;
-        console.log(idCard);
-            api.updateCatById(idCard, newCatInfo )
-                .then(()=> {
-                    const dataLocalCats = JSON.parse(localStorage.getItem('cats'));
-                    // console.log (dataLocalCats);
-                    const newDataLocal = dataLocalCats.map((localInfo) => {
-                        // console.log( localInfo.id);
-                        if(localInfo.id == idCard ){
-                            console.log(localInfo, newCatInfo);
-                            localInfo = {...localInfo, ...newCatInfo}; 
-                            console.log (localInfo);
-                            return localInfo;
-                        } else {
-                            return localInfo;
-                } 
-        
-        },[] )
-        console.log (newDataLocal);
-        localStorage.setItem('cats', JSON.stringify(newDataLocal));
-            setDataRefresh(LIVE_LOCAL_STORAGE);
-                })      
-        
-    } 
+    api.updateCatById(idCard, newCatInfo).then(() => {
+      const dataLocalCats = JSON.parse(localStorage.getItem("cats"));
+      const newDataLocal = dataLocalCats.map((localInfo) => {
+        if (localInfo.id == idCard) {
+          localInfo = { ...localInfo, ...newCatInfo };
 
-})
+          return localInfo;
+        } else {
+          return localInfo;
+        }
+      }, []);
 
+      localStorage.setItem("cats", JSON.stringify(newDataLocal));
+      setDataRefresh(LIVE_LOCAL_STORAGE);
+    });
+  }
+});
 
-const popupNewCat = new Popup ("popup-add-cat");
-const popupLogin = new Popup ("popup-login");
-const popupCatInfo = new Popup ("popup__cat-info");
+const popupNewCat = new Popup("popup-add-cat");
+const popupLogin = new Popup("popup-login");
+const popupCatInfo = new Popup("popup__cat-info");
 
-btnAddCat.addEventListener('click', () => popupNewCat.open());
-btnLogin.addEventListener('click', () => popupLogin.open());
-formNewCat.addEventListener('submit', addNewCatFromForm);
-formLogin.addEventListener('submit', loginFromForm);
-popupNewCat.setAddEventListener();
-popupLogin.setAddEventListener();
-popupCatInfo.setAddEventListener(); 
+btnAddCat.addEventListener("click", () => popupNewCat.open()); // вешаем событие клик на кнопку Добавить кота => открытие попапа с инфой
+btnLogin.addEventListener("click", () => popupLogin.open()); // вешаем событие клик открытия окна авторизации
+formNewCat.addEventListener("submit", addNewCatFromForm); // событие получения данных формы и создание новой карточки кота по нажатию кнопки в попапе добавления кота
+formLogin.addEventListener("submit", loginFromForm); // событие получения данных формы авторизации и открытие возможностей для авторизованного пользователя
+popupNewCat.setAddEventListener(); //включаем возможности закрытия попапа по нажатия на крестик и вне поля попапа
+popupLogin.setAddEventListener(); //включаем возможности закрытия попапа по нажатия на крестик и вне поля попапа
+popupCatInfo.setAddEventListener(); //включаем возможности закрытия попапа по нажатия на крестик и вне поля попапа
 
-
-const isLogin = Cookies.get('email');
-if(!isLogin){
-    popupLogin.open();
-    
-}else {
-    btnAddCat.classList.remove('visually-hidden');
+/* Проверка авторизован ли пользователь */
+const isLogin = Cookies.get("email");
+if (!isLogin) {
+  popupLogin.open();
+} else {
+  btnAddCat.classList.remove("visually-hidden");
 }
