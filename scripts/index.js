@@ -175,6 +175,7 @@ popupCardInfo.addEventListener("click", (e) => {
         const idCard = popupCardInfo.querySelector(".form__input-cat-id").value;
     { api.deleteCatById(idCard).then(() => {
         localStorage.removeItem("cats");
+        popupCatInfo.close();
         location.reload();
       });
     
