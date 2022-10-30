@@ -13,8 +13,15 @@ function serializeForm(elements) {
   const dataForm = {};
   elements.forEach((elem) => {
     if (elem.type === "submit") {
-      return;
-    }
+        return;
+    //   if(elem.classList.contains('card__like')){
+    //     dataForm[elem.name] = true; 
+    //     console.log(elem.name, elem.value)       
+      }else {
+        dataForm[elem.name] = false;
+      }
+
+    
     if (elem.type !== "checkbox") {
       dataForm[elem.name] = elem.value;
     }
@@ -22,6 +29,7 @@ function serializeForm(elements) {
       dataForm[elem.name] = elem.checked;
     }
   });
+  console.log(dataForm )
   return dataForm;
 }
 /*функция открытия карточки по нажатию на кнопку */
@@ -33,13 +41,29 @@ function openCatInfo(card) {
     getCatInfo(id.textContent);
   });
 }
+
+
+
+/*ф-ция дезактивации ссылки */
+function removeDisable(selector){
+    const allCardLink = selector.querySelectorAll('.card__link');
+    allCardLink.forEach((link)=>{
+    link.classList.remove('disabled')
+  });
+}
+
 /* наполнение карточками секции*/
 function createCat(data) {
   const card = new Card(data, "#card-template"); //создание экземпляра класса карточки
   const newCardEl = card.getElement(); // вызов метода по наполнению карточкой информацией  из БД
-  openCatInfo(newCardEl); // вещаю событие дл отрытия подробной информации по клику на имя кота
+  openCatInfo(newCardEl); // вещаю событие для отрытия подробной информации по клику на имя кота
 
-  cardsBox.append(newCardEl); //добавляю карточку в скцию
+  cardsBox.append(newCardEl); //добавляю карточку в секцию
+ 
+  const allCardLink = cardsBox.querySelectorAll('.card__link');
+    allCardLink.forEach((link)=>{
+    link.classList.add('disabled')
+  });
 }
 /* функция для авторизации */
 function loginFromForm(e) {
@@ -49,21 +73,21 @@ function loginFromForm(e) {
   Cookies.set("email", `${dataLogin.email}`); // вносим данные из формы в куки
   popupLogin.close();
   btnAddCat.classList.remove("visually-hidden"); //открывает кнопку добавления котиков
-  const allCardLink = cardsBox.querySelectorAll('.card__link');
-  allCardLink.forEach((link)=>{
-    link.classList.remove('disabled')
-  });
+  removeDisable(cardsBox);
+  
 }
+/* функция создания новой карточки и отправки данных в хранилища*/
 function addNewCatFromForm(e) {
   e.preventDefault();
   const dataFromForm = [...formNewCat.elements]; //получение элементов формы добавлния котика
   const dataNewCat = serializeForm(dataFromForm); //получаем данные из формы
 
-  api
-    .addNewCat(dataNewCat) // отправляем данные на сервер
+  api.addNewCat(dataNewCat) // отправляем данные на сервер
     .then(() => {
       createCat(dataNewCat); //создаем новую карточку в секции с новыми данными
-      popupNewCat.close(); // закрываем попап добавления котика
+      popupNewCat.close();  // закрываем попап добавления котика
+      removeDisable(cardsBox);
+    
       const cats = JSON.parse(localStorage.getItem("cats")); //получаем данный из локального хранилища
       cats.push(dataNewCat); //добавляем туда информацию о новм коте
 
@@ -71,6 +95,7 @@ function addNewCatFromForm(e) {
       setDataRefresh(LIVE_LOCAL_STORAGE); //устаналиваем новую дату жизни локального храниища
     });
 }
+/*функция установки времени жизни локального хранилища */
 function setDataRefresh(min) {
   const setTime = new Date(new Date().getTime() + min * 60000); //получаем дату просрочки локального хранилища
   localStorage.setItem("catsRefresh", setTime); //добавляем эту информацию в локальне хранилище
@@ -91,8 +116,10 @@ function checkLocalStorage() {
       data.forEach(function (catInfo) {
         createCat(catInfo);
       });
+      
       localStorage.setItem("cats", JSON.stringify(data));
       setDataRefresh(LIVE_LOCAL_STORAGE);
+      removeDisable(cardsBox);
     });
   }
 }
@@ -120,6 +147,7 @@ function getCatInfo(id) {
     dataLocal.forEach((elem) => {
       if (elem.id == id) {
         createCatInfoCard(elem);
+       
       }
     });
   } else {
@@ -127,10 +155,12 @@ function getCatInfo(id) {
     api.getCatById(id).then(({ data }) => {
       const dataInfo = data;
       createCatInfoCard(dataInfo);
+     
     });
   }
 }
-/* С этой функцией хочу поработать, перенести ее действия в класс  */
+
+/* С этой функцией хочу поработать, перенести ее действия в класс или в отдельные функции */
 popupCardInfo.addEventListener("click", (e) => {
   e.preventDefault();
   const discript = popupCardInfo.querySelector(".form__cat-description");
@@ -139,18 +169,28 @@ popupCardInfo.addEventListener("click", (e) => {
   const btnSave = popupCardInfo.querySelector(".btn-save");
   const btnChange = popupCardInfo.querySelector(".btn-change");
 
-  if (
-    e.target.classList.contains("btn-delete") ||
-    e.target.closest(".fa-trash")
-  ) {
-    const idCard = popupCardInfo.querySelector(".form__input-cat-id").value;
-    {
-      api.deleteCatById(idCard).then(() => {
+  if (e.target.classList.contains("btn-delete") || e.target.closest(".fa-trash")) {
+    let answer = confirm ('Вы уверены, что хотите удалить кота???');
+      if(answer){
+        const idCard = popupCardInfo.querySelector(".form__input-cat-id").value;
+    { api.deleteCatById(idCard).then(() => {
         localStorage.removeItem("cats");
         location.reload();
       });
-      popupCatInfo.close();
+    
     }
+  } else{
+    popupCatInfo.close();
+  }
+      }
+
+  
+    
+  if (
+    e.target.classList.contains("card__like") ||
+    e.target.closest(".fa-heart")
+  ) {
+    like.classList.toggle("card__like-active");
   }
 
   if (
@@ -158,11 +198,14 @@ popupCardInfo.addEventListener("click", (e) => {
     e.target.closest(".fa-pen-to-square")
   ) {
     discript.toggleAttribute("disabled");
+    like.toggleAttribute("disabled");
     age.classList.add("focus");
     discript.classList.add("focus");
     age.toggleAttribute("disabled");
+    
     btnSave.classList.toggle("unvisible");
     btnChange.classList.toggle("unvisible");
+  
   }
 
   if (
@@ -176,12 +219,17 @@ popupCardInfo.addEventListener("click", (e) => {
     discript.classList.remove("focus");
     btnSave.classList.toggle("unvisible");
     btnChange.classList.toggle("unvisible");
+  
     const formAboutCat = document.querySelector(".popup__form-cat-info");
     const CatInfo = [...formAboutCat.elements];
-    const newCatInfo = serializeForm(CatInfo);
-
+    const newCatInfo = serializeForm(CatInfo);    
     const idCard = newCatInfo.id;
-
+    if (like.classList.contains("card__like-active")){
+        newCatInfo.favourite = true;        
+    }else {        
+        newCatInfo.favourite = false;
+    }
+    console.log(newCatInfo);
     api.updateCatById(idCard, newCatInfo).then(() => {
       const dataLocalCats = JSON.parse(localStorage.getItem("cats"));
       const newDataLocal = dataLocalCats.map((localInfo) => {
@@ -208,6 +256,7 @@ btnAddCat.addEventListener("click", () => popupNewCat.open()); // вешаем �
 btnLogin.addEventListener("click", () => popupLogin.open()); // вешаем событие клик открытия окна авторизации
 formNewCat.addEventListener("submit", addNewCatFromForm); // событие получения данных формы и создание новой карточки кота по нажатию кнопки в попапе добавления кота
 formLogin.addEventListener("submit", loginFromForm); // событие получения данных формы авторизации и открытие возможностей для авторизованного пользователя
+
 popupNewCat.setAddEventListener(); //включаем возможности закрытия попапа по нажатия на крестик и вне поля попапа
 popupLogin.setAddEventListener(); //включаем возможности закрытия попапа по нажатия на крестик и вне поля попапа
 popupCatInfo.setAddEventListener(); //включаем возможности закрытия попапа по нажатия на крестик и вне поля попапа
@@ -215,13 +264,10 @@ popupCatInfo.setAddEventListener(); //включаем возможности з
 /* Проверка авторизован ли пользователь */
 const isLogin = Cookies.get("email");
 if (!isLogin) {
+   
   popupLogin.open();
 } else {
   btnAddCat.classList.remove("visually-hidden");
-  const allCardLink = cardsBox.querySelectorAll('.card__link');
-  allCardLink.forEach((link)=>{
-    link.classList.remove('disabled')
-  });
-  
+  removeDisable(cardsBox);
 
 }
