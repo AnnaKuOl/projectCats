@@ -35,13 +35,7 @@
     transition: linear 0.2s, linear 0.2s;
     transition-property: opacity, visibility;
 }
-/* .popup__close_external {
-    background-color: transparent;
-    color: var(--bg-main-color);
-    top: -40px;
-    right: -40px;
-    font-size: 30px;
-} */
+
 .popup__btn-close{
     color: var(--bg-dark-color);
     background-color: transparent;

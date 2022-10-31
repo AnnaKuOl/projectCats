@@ -164,11 +164,15 @@ function getCatInfo(id) {
 
 /*функция изменения состояния полей и кнопок */
 
-function changeStatus(textarea, input, btn1, btn2) {
+function changeStatus(textarea, input, link, btn1, btn2) {
   textarea.toggleAttribute("disabled");
   input.toggleAttribute("disabled");
+ 
+  console.log(link)
   input.classList.toggle("focus");
   textarea.classList.toggle("focus");
+  link.classList.toggle("visually-hidden");
+  link.classList.toggle("focus");
   btn1.classList.toggle("unvisible");
   btn2.classList.toggle("unvisible");
 
@@ -176,13 +180,13 @@ function changeStatus(textarea, input, btn1, btn2) {
 
 // console.log(Array.from(popupCardInfo.children))
 
-/* С этим хочу поработать для оптимизации */
+/*Обработчик соыбтий на открытой карточке подробной информации, дающий возможность редактировать и удалять карточку. С этим хочу поработать для оптимизации */
 popupCardInfo.addEventListener("click", (e) => {
   e.preventDefault();
 
   const discript = popupCardInfo.querySelector(".form__cat-description");
   const age = popupCardInfo.querySelector(".form__input-cat-age");
-  // const like = popupCardInfo.querySelector(".form__cat-like");
+  const link = popupCardInfo.querySelector(".form__cat-img").querySelector(".form__cat-link");
   const btnSave = popupCardInfo.querySelector(".btn-save");
   const btnChange = popupCardInfo.querySelector(".btn-change");
 
@@ -202,13 +206,13 @@ popupCardInfo.addEventListener("click", (e) => {
     }
   }
   if (e.target.classList.contains("btn-change") || e.target.closest(".fa-pen-to-square")) {
-    changeStatus(discript, age, btnSave, btnChange);
+    changeStatus(discript, age, link, btnSave, btnChange);
   }
   if (
     e.target.classList.contains("btn-save") ||
     e.target.closest(".fa-download")
   ) {
-    changeStatus(discript, age, btnSave, btnChange);
+    changeStatus(discript, age, link, btnSave, btnChange);
     const formAboutCat = document.querySelector(".popup__form-cat-info");
     const CatInfo = [...formAboutCat.elements];
     const newCatInfo = serializeForm(CatInfo);
@@ -231,6 +235,7 @@ popupCardInfo.addEventListener("click", (e) => {
 
       localStorage.setItem("cats", JSON.stringify(newDataLocal));
       setDataRefresh(LIVE_LOCAL_STORAGE);
+      location.reload();
     });
   }
 });

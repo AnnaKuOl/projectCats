@@ -1,6 +1,6 @@
 
 .popup__container-info {
-    height: 250px;
+    height: 270px;
     width: 550px;
     border-radius: 8px;
     background-color: var(--outline-color);
@@ -16,17 +16,24 @@
 }
 
 .form__cat-img{
-
-    display: block;
-    object-fit: cover;
+    position: relative;
     grid-row: span 4;
-   
     height: 150px;
     width: 200px;
-    
-    /* background-size: cover; */
+
+}
+.form__cat-image{
+    width: 100%;
+    height: 85%;
+    object-fit: cover;
     background-position: center;
     background-repeat: no-repeat; 
+
+}
+.form__cat-link {
+    position: absolute;
+    bottom: 0;
+    left: 0;
 
 }
 .form__cat-id{
@@ -96,11 +103,11 @@
 }
 
 .form__cat-description{
+    height: 60px;
     overflow: hidden;
     grid-column: span 3;
-    grid-row: span 5;
     resize: none;
-
+    position: relative;
     border: none;
     background-color: var(--outline-color);
     font-family: "Arial", "Helvetica", sans-serif;

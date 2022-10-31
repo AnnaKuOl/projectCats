@@ -40,7 +40,7 @@ class CardInfo extends Card {
     this.element = this._getTemplate().cloneNode(true);
     const cardName = this.element.querySelector(".form__input-cat-name");
     const cardId = this.element.querySelector(".form__input-cat-id");
-    const cardImg = this.element.querySelector(".form__cat-img");
+    const cardImg = this.element.querySelector(".form__cat-img").querySelector(".form__cat-image");
     const cardLike = this.element.querySelector(".card__like");
     const cardAge = this.element.querySelector(".form__input-cat-age");
     const cardDescription = this.element.querySelector(
