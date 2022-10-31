@@ -176,13 +176,13 @@ function changeStatus(textarea, input, btn1, btn2) {
 
 // console.log(Array.from(popupCardInfo.children))
 
-/* С этой функцией хочу поработать */
+/* С этим хочу поработать для оптимизации */
 popupCardInfo.addEventListener("click", (e) => {
   e.preventDefault();
 
   const discript = popupCardInfo.querySelector(".form__cat-description");
   const age = popupCardInfo.querySelector(".form__input-cat-age");
-  const like = popupCardInfo.querySelector(".form__cat-like");
+  // const like = popupCardInfo.querySelector(".form__cat-like");
   const btnSave = popupCardInfo.querySelector(".btn-save");
   const btnChange = popupCardInfo.querySelector(".btn-change");
 
@@ -201,12 +201,8 @@ popupCardInfo.addEventListener("click", (e) => {
       popupCatInfo.close();
     }
   }
-
-
-
   if (e.target.classList.contains("btn-change") || e.target.closest(".fa-pen-to-square")) {
     changeStatus(discript, age, btnSave, btnChange);
-
   }
   if (
     e.target.classList.contains("btn-save") ||

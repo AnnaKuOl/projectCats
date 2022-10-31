@@ -77,3 +77,15 @@
     width: 100px;
     z-index: 2;
 }
+@media (max-width: 620px) {
+    .popup__btn-group{
+        margin: 0 47px;
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+    }
+    .popup__btn-close{
+        top: 5px;
+        right: 0;
+    }
+}

@@ -86,6 +86,7 @@
 }
 
 .popup__form-cat-info input {
+    width: 100%;
     overflow: hidden;
     border: none;
     background-color: var(--outline-color);
@@ -99,13 +100,13 @@
     grid-column: span 3;
     grid-row: span 5;
     resize: none;
-    height: 100%;
+
     border: none;
     background-color: var(--outline-color);
     font-family: "Arial", "Helvetica", sans-serif;
     padding: 5px;
     color: var(--bg-dark-color);
-    box-sizing: border-box;
+   
 
 }
 .unvisible {
@@ -115,3 +116,43 @@
     outline: 1px solid var(--bg-dark-color);
     border-radius: 5px;
 }
+@media (max-width: 620px) {
+
+    .popup__container-info {
+        width: 300px; 
+        height: 400px;
+
+    }
+    .popup__form-cat-info{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+    } 
+    .form__cat-img{
+        width: 250px;
+        padding-top: 20px;
+    }
+    .fa-star{
+        font-size: 14px;
+    }
+
+    .form__cat-rate{
+        gap: 4px;
+
+    }
+    .form__cat-like{
+        top: 155px;
+        right: 5px;
+    }
+
+    .form__cat-description {
+        display: block;
+        width: 250px;
+        height: 70px;
+    }
+   
+}
+
