@@ -13,15 +13,13 @@ function serializeForm(elements) {
   const dataForm = {};
   elements.forEach((elem) => {
     if (elem.type === "submit") {
-        return;
-    //   if(elem.classList.contains('card__like')){
-    //     dataForm[elem.name] = true; 
-    //     console.log(elem.name, elem.value)       
-      }else {
-        dataForm[elem.name] = false;
-      }
-
-    
+      return;
+      //   if(elem.classList.contains('card__like')){
+      //     dataForm[elem.name] = true; 
+      //     console.log(elem.name, elem.value)       
+    } else {
+      dataForm[elem.name] = false;
+    }
     if (elem.type !== "checkbox") {
       dataForm[elem.name] = elem.value;
     }
@@ -29,7 +27,7 @@ function serializeForm(elements) {
       dataForm[elem.name] = elem.checked;
     }
   });
-  console.log(dataForm )
+  console.log(dataForm)
   return dataForm;
 }
 /*функция открытия карточки по нажатию на кнопку */
@@ -45,9 +43,9 @@ function openCatInfo(card) {
 
 
 /*ф-ция дезактивации ссылки */
-function removeDisable(selector){
-    const allCardLink = selector.querySelectorAll('.card__link');
-    allCardLink.forEach((link)=>{
+function removeDisable(selector) {
+  const allCardLink = selector.querySelectorAll('.card__link');
+  allCardLink.forEach((link) => {
     link.classList.remove('disabled')
   });
 }
@@ -59,9 +57,9 @@ function createCat(data) {
   openCatInfo(newCardEl); // вещаю событие для отрытия подробной информации по клику на имя кота
 
   cardsBox.append(newCardEl); //добавляю карточку в секцию
- 
+
   const allCardLink = cardsBox.querySelectorAll('.card__link');
-    allCardLink.forEach((link)=>{
+  allCardLink.forEach((link) => {
     link.classList.add('disabled')
   });
 }
@@ -74,7 +72,7 @@ function loginFromForm(e) {
   popupLogin.close();
   btnAddCat.classList.remove("visually-hidden"); //открывает кнопку добавления котиков
   removeDisable(cardsBox);
-  
+
 }
 /* функция создания новой карточки и отправки данных в хранилища*/
 function addNewCatFromForm(e) {
@@ -85,9 +83,9 @@ function addNewCatFromForm(e) {
   api.addNewCat(dataNewCat) // отправляем данные на сервер
     .then(() => {
       createCat(dataNewCat); //создаем новую карточку в секции с новыми данными
-      popupNewCat.close();  // закрываем попап добавления котика
+      popupNewCat.close(); // закрываем попап добавления котика
       removeDisable(cardsBox);
-    
+
       const cats = JSON.parse(localStorage.getItem("cats")); //получаем данный из локального хранилища
       cats.push(dataNewCat); //добавляем туда информацию о новм коте
 
@@ -112,11 +110,13 @@ function checkLocalStorage() {
       createCat(catInfo);
     });
   } else {
-    api.getAllCats().then(({ data }) => {
+    api.getAllCats().then(({
+      data
+    }) => {
       data.forEach(function (catInfo) {
         createCat(catInfo);
       });
-      
+
       localStorage.setItem("cats", JSON.stringify(data));
       setDataRefresh(LIVE_LOCAL_STORAGE);
       removeDisable(cardsBox);
@@ -147,22 +147,39 @@ function getCatInfo(id) {
     dataLocal.forEach((elem) => {
       if (elem.id == id) {
         createCatInfoCard(elem);
-       
+
       }
     });
   } else {
     //создание карточки из БД
-    api.getCatById(id).then(({ data }) => {
+    api.getCatById(id).then(({
+      data
+    }) => {
       const dataInfo = data;
       createCatInfoCard(dataInfo);
-     
+
     });
   }
 }
 
-/* С этой функцией хочу поработать, перенести ее действия в класс или в отдельные функции */
+/*функция изменения состояния полей и кнопок */
+
+function changeStatus(textarea, input, btn1, btn2) {
+  textarea.toggleAttribute("disabled");
+  input.toggleAttribute("disabled");
+  input.classList.toggle("focus");
+  textarea.classList.toggle("focus");
+  btn1.classList.toggle("unvisible");
+  btn2.classList.toggle("unvisible");
+
+}
+
+// console.log(Array.from(popupCardInfo.children))
+
+/* С этой функцией хочу поработать */
 popupCardInfo.addEventListener("click", (e) => {
   e.preventDefault();
+
   const discript = popupCardInfo.querySelector(".form__cat-description");
   const age = popupCardInfo.querySelector(".form__input-cat-age");
   const like = popupCardInfo.querySelector(".form__cat-like");
@@ -170,72 +187,45 @@ popupCardInfo.addEventListener("click", (e) => {
   const btnChange = popupCardInfo.querySelector(".btn-change");
 
   if (e.target.classList.contains("btn-delete") || e.target.closest(".fa-trash")) {
-    let answer = confirm ('Вы уверены, что хотите удалить кота???');
-      if(answer){
-        const idCard = popupCardInfo.querySelector(".form__input-cat-id").value;
-    { api.deleteCatById(idCard).then(() => {
-        localStorage.removeItem("cats");
-        popupCatInfo.close();
-        location.reload();
-      });
-    
-    }
-  } else{
-    popupCatInfo.close();
-  }
+    let answer = confirm('Вы уверены, что хотите удалить кота???');
+    if (answer) {
+      const idCard = popupCardInfo.querySelector(".form__input-cat-id").value; {
+        api.deleteCatById(idCard).then(() => {
+          localStorage.removeItem("cats");
+          popupCatInfo.close();
+          location.reload();
+        });
+
       }
-
-  
-    
-  if (
-    e.target.classList.contains("card__like") ||
-    e.target.closest(".fa-heart")
-  ) {
-    like.classList.toggle("card__like-active");
+    } else {
+      popupCatInfo.close();
+    }
   }
 
-  if (
-    e.target.classList.contains("btn-change") ||
-    e.target.closest(".fa-pen-to-square")
-  ) {
-    discript.toggleAttribute("disabled");
-    like.toggleAttribute("disabled");
-    age.classList.add("focus");
-    discript.classList.add("focus");
-    age.toggleAttribute("disabled");
-    
-    btnSave.classList.toggle("unvisible");
-    btnChange.classList.toggle("unvisible");
-  
-  }
 
+
+  if (e.target.classList.contains("btn-change") || e.target.closest(".fa-pen-to-square")) {
+    changeStatus(discript, age, btnSave, btnChange);
+
+  }
   if (
     e.target.classList.contains("btn-save") ||
     e.target.closest(".fa-download")
   ) {
-    discript.toggleAttribute("disabled");
-    age.toggleAttribute("disabled");
-    like.toggleAttribute("disabled");
-    age.classList.remove("focus");
-    discript.classList.remove("focus");
-    btnSave.classList.toggle("unvisible");
-    btnChange.classList.toggle("unvisible");
-  
+    changeStatus(discript, age, btnSave, btnChange);
     const formAboutCat = document.querySelector(".popup__form-cat-info");
     const CatInfo = [...formAboutCat.elements];
-    const newCatInfo = serializeForm(CatInfo);    
+    const newCatInfo = serializeForm(CatInfo);
     const idCard = newCatInfo.id;
-    if (like.classList.contains("card__like-active")){
-        newCatInfo.favourite = true;        
-    }else {        
-        newCatInfo.favourite = false;
-    }
-    console.log(newCatInfo);
+
     api.updateCatById(idCard, newCatInfo).then(() => {
       const dataLocalCats = JSON.parse(localStorage.getItem("cats"));
       const newDataLocal = dataLocalCats.map((localInfo) => {
         if (localInfo.id == idCard) {
-          localInfo = { ...localInfo, ...newCatInfo };
+          localInfo = {
+            ...localInfo,
+            ...newCatInfo
+          };
 
           return localInfo;
         } else {
@@ -265,7 +255,7 @@ popupCatInfo.setAddEventListener(); //включаем возможности з
 /* Проверка авторизован ли пользователь */
 const isLogin = Cookies.get("email");
 if (!isLogin) {
-   
+
   popupLogin.open();
 } else {
   btnAddCat.classList.remove("visually-hidden");
