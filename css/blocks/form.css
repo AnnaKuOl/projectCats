@@ -3,20 +3,23 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 20px
 }
+
 .form__img {
     grid-row: span 3;
     width: 100%;
-    background-image: url(https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg);    
+    background-image: url(https://mrkot.com/wp-content/uploads/2018/09/belaya-belyy-kot-700x525.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
+
 .form__textarea {
     grid-row: span 2;
     resize: none;
     height: 100%;
 
 }
+
 .form__input {
     outline: none;
     width: 100%;
@@ -26,39 +29,44 @@
     border: 1px solid var(--outline-color);
     font-family: "Arial", "Helvetica", sans-serif;
 }
+
 .form__input:focus {
     border: 1px solid var(--focus-color);
 }
 
 
-.form__checkbox{
+.form__checkbox {
     visibility: hidden;
     position: absolute;
 
 }
-.form__checkbox-name{
+
+.form__checkbox-name {
     color: var(--text-secondary-color);
-  
+
 }
-.form__checkbox-fake{
+
+.form__checkbox-fake {
     font-size: 22px;
     color: var(--text-secondary-color);
 
 }
+
 .form__checkbox-group {
     display: flex;
     align-items: center;
     gap: 10px;
-    
+
     position: relative;
 
 }
 
 .form__checkbox:checked~.form__checkbox-name,
-.form__checkbox:checked~.form__checkbox-fake{
+.form__checkbox:checked~.form__checkbox-fake {
     color: var(--focus-color);
     opacity: 0.6;
 }
-.form__btn{
+
+.form__btn {
     font-size: 14px;
 }

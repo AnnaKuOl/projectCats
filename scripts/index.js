@@ -14,9 +14,6 @@ function serializeForm(elements) {
   elements.forEach((elem) => {
     if (elem.type === "submit") {
       return;
-      //   if(elem.classList.contains('card__like')){
-      //     dataForm[elem.name] = true; 
-      //     console.log(elem.name, elem.value)       
     } else {
       dataForm[elem.name] = false;
     }
@@ -27,7 +24,6 @@ function serializeForm(elements) {
       dataForm[elem.name] = elem.checked;
     }
   });
-  console.log(dataForm)
   return dataForm;
 }
 /*функция открытия карточки по нажатию на кнопку */
@@ -39,8 +35,6 @@ function openCatInfo(card) {
     getCatInfo(id.textContent);
   });
 }
-
-
 
 /*ф-ция дезактивации ссылки */
 function removeDisable(selector) {
@@ -167,8 +161,6 @@ function getCatInfo(id) {
 function changeStatus(textarea, input, link, btn1, btn2) {
   textarea.toggleAttribute("disabled");
   input.toggleAttribute("disabled");
- 
-  console.log(link)
   input.classList.toggle("focus");
   textarea.classList.toggle("focus");
   link.classList.toggle("visually-hidden");
@@ -178,9 +170,11 @@ function changeStatus(textarea, input, link, btn1, btn2) {
 
 }
 
-// console.log(Array.from(popupCardInfo.children))
+const popupNewCat = new Popup("popup-add-cat");
+const popupLogin = new Popup("popup-login");
+const popupCatInfo = new Popup("popup__cat-info");
 
-/*Обработчик соыбтий на открытой карточке подробной информации, дающий возможность редактировать и удалять карточку. С этим хочу поработать для оптимизации */
+/*Обработчик событий на открытой карточке подробной информации, дающий возможность редактировать и удалять карточку. С этим хочу поработать для оптимизации */
 popupCardInfo.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -189,7 +183,7 @@ popupCardInfo.addEventListener("click", (e) => {
   const link = popupCardInfo.querySelector(".form__cat-img").querySelector(".form__cat-link");
   const btnSave = popupCardInfo.querySelector(".btn-save");
   const btnChange = popupCardInfo.querySelector(".btn-change");
-
+  //действия на кнопку удаления
   if (e.target.classList.contains("btn-delete") || e.target.closest(".fa-trash")) {
     let answer = confirm('Вы уверены, что хотите удалить кота???');
     if (answer) {
@@ -205,9 +199,11 @@ popupCardInfo.addEventListener("click", (e) => {
       popupCatInfo.close();
     }
   }
+  //действия на кнопку редактирования
   if (e.target.classList.contains("btn-change") || e.target.closest(".fa-pen-to-square")) {
     changeStatus(discript, age, link, btnSave, btnChange);
   }
+  //действия на кнопку сохранения
   if (
     e.target.classList.contains("btn-save") ||
     e.target.closest(".fa-download")
@@ -217,33 +213,28 @@ popupCardInfo.addEventListener("click", (e) => {
     const CatInfo = [...formAboutCat.elements];
     const newCatInfo = serializeForm(CatInfo);
     const idCard = newCatInfo.id;
-
-    api.updateCatById(idCard, newCatInfo).then(() => {
-      const dataLocalCats = JSON.parse(localStorage.getItem("cats"));
-      const newDataLocal = dataLocalCats.map((localInfo) => {
-        if (localInfo.id == idCard) {
-          localInfo = {
-            ...localInfo,
-            ...newCatInfo
-          };
-
-          return localInfo;
-        } else {
-          return localInfo;
+    const dataLocalCats = JSON.parse(localStorage.getItem("cats"));
+    const newDataLocal = dataLocalCats.map((localInfo) => {
+      if (localInfo.id == idCard) { //ищем информацию о карточке с новым id
+        if (!!newCatInfo.img_link) {  // проверяем была ли вставлена ссылка на нового котика
+          localInfo = { ...localInfo, ...newCatInfo };
+        } else { //если ссылки не было то берем старую сслыку и вставляем ее в новый объект с данными
+          newCatInfo.img_link = localInfo.img_link;
+          localInfo = { ...localInfo, ...newCatInfo };
         }
-      }, []);
-
-      localStorage.setItem("cats", JSON.stringify(newDataLocal));
+        return localInfo;
+      } else {
+        return localInfo;
+      }
+    }, []);
+    api.updateCatById(idCard, newCatInfo).then(() => { //отправка данных на сервер
+      localStorage.setItem("cats", JSON.stringify(newDataLocal)); //обновление хранилища
       setDataRefresh(LIVE_LOCAL_STORAGE);
       location.reload();
-    });
+    })
+
   }
 });
-
-const popupNewCat = new Popup("popup-add-cat");
-const popupLogin = new Popup("popup-login");
-const popupCatInfo = new Popup("popup__cat-info");
-
 btnAddCat.addEventListener("click", () => popupNewCat.open()); // вешаем событие клик на кнопку Добавить кота => открытие попапа с инфой
 btnLogin.addEventListener("click", () => popupLogin.open()); // вешаем событие клик открытия окна авторизации
 formNewCat.addEventListener("submit", addNewCatFromForm); // событие получения данных формы и создание новой карточки кота по нажатию кнопки в попапе добавления кота
