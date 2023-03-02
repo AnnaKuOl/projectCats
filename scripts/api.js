@@ -1,5 +1,5 @@
 const CONFIG_API = {
-    url: 'http://sb-cats.herokuapp.com/api/2/annakuol',
+    url: 'https://sb-cats.herokuapp.com/api/2/annakuol',
     headers: {
         'Content-type': 'application/json'
     }
@@ -40,9 +40,9 @@ class Api {
 
 
     getCatById(idCat){
-        fetch(`${this._url}/show/${idCat}`, {
+        return fetch(`${this._url}/show/${idCat}`, {
             method: 'GET',
-        })
+        }).then(this._onResponce)
     }
 
 
